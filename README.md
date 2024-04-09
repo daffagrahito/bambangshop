@@ -77,6 +77,14 @@ This is the place for you to write reflections:
 ### Mandatory (Publisher) Reflections
 
 #### Reflection Publisher-1
+1. ***In the Observer pattern diagram explained by the Head First Design Pattern book, Subscriber is defined as an interface. Explain based on your understanding of Observer design patterns, do we still need an interface (or trait in Rust) in this BambangShop case, or a single Model struct is enough?***
+Observer design pattern biasanya didefinisikan sebagai interface karena memperbolehkan beberapa concrete implementations, sehingga jika kita memiliki beberapa Observer dengan tipe berbeda-beda maka mereka dapat meng-*update* dengan cara yang berbeda-beda dari Publisher. Dalam Rust, biasanya ini direpresentasikan sebagai trait, yang dimana Observer dapat diimplementasikan dari banyak struct. Dalam kasus ini, jika seluruh Subscriber akan memiliki fields yang sama maka sebuah Model struct saja sudah cukup. Tapi sebenarnya tergantung juga apakah kita membutuhkan trait atau sebuah struct saja bergantung dari requirement aplikasinya.
+   
+2. ***Did in Program and url in Subscriber is intended to be unique. Explain based on your understanding, is using Vec (list) sufficient or using DashMap (map/dictionary) like we currently use is necessary for this case?***
+Menggunakan `DashMap` lebih tepat daripada menggunakan `Vec` jika url pada Subscriber akan menjadi unique. Pada dasarnya untuk mencari sebuah Subscriber dalam `Vec` diperlukan running time O(n), sedangkan dengan DashMap kita hanya perlu O(1) time untuk mencari dan mendapatkan suatu Subscriber. Lalu juga, `DashMap` di desain untuk concurrent access yang dimana beberapa thread dapat membaca dan menulis data ke `DashMap` tanpa menyebabkan *data race*
+   
+3. ***When programming using Rust, we are enforced by rigorous compiler constraints to make a thread-safe program. In the case of the List of Subscribers (SUBSCRIBERS) static variable, we used the DashMap external library for thread-safe HashMap. Explain based on your understanding of design patterns, do we still need DashMap or we can implement Singleton pattern instead?***
+Singleton pattern memastikan bahwa sebuah class hanya ada satu instance dan memberikan global point untuk akses, sehingga dipastikan bahwa hanya ada satu variable `SUBSCRIBERS` saja untuk keseluruhan aplikasi. Lalu `DashMap` sendiri adalah Hashmap yang merupakan *thread-safe* data structure yang memperbolehkan multiple thread untuk mengakses dan mengubah data `SUBSCRIBERS` tanpa menyebabkan *data race* atau isu concurrency lainnya. Jika kita hanya menggunakan Hashmap biasa dengan Singleton pattern, maka *thread-safety* itu akan hilang yang malah mengakibatkan data race jika aplikasinya adalah multi-threaded. Jadi kesimpulannya, karena aplikasi BambangShop adalah multi-threaded application dan `SUBSCRIBERS` akan diakses banyak thread maka `DashMap` lebbih cocok.
 
 #### Reflection Publisher-2
 
