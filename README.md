@@ -65,11 +65,11 @@ You can install Postman via this website: https://www.postman.com/downloads/
     -   [x] Commit: `Implement unsubscribe function in Notification controller.`
     -   [x] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
 -   **STAGE 3: Implement notification mechanism**
-    -   [ ] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
-    -   [ ] Commit: `Implement notify function in Notification service to notify each Subscriber.`
-    -   [ ] Commit: `Implement publish function in Program service and Program controller.`
-    -   [ ] Commit: `Edit Product service methods to call notify after create/delete.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-3" questions in this README.
+    -   [x] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
+    -   [x] Commit: `Implement notify function in Notification service to notify each Subscriber.`
+    -   [x] Commit: `Implement publish function in Program service and Program controller.`
+    -   [x] Commit: `Edit Product service methods to call notify after create/delete.`
+    -   [x] Write answers of your learning module's "Reflection Publisher-3" questions in this README.
 
 ## Your Reflections
 This is the place for you to write reflections:
@@ -103,3 +103,14 @@ This is the place for you to write reflections:
     Setelah saya cari tahu lebih lanjut dengan mencoba-coba, Postman ini berguna untuk melakukan API Testing terhadap aplikasi yang telah dibuat apakah fungsionalitasnya sudah memenuhi kriteria yang kita mau dan berjalan semestinya. Kita dapat mengatur HTTP method untuk mengirimkan requestnya ke endpoint API yang dituju dan melihat apakah responsenya sudah sesuai. Kedepannya, Postman akan saya gunakan untuk melakukan API Testing untuk fungsionalitas aplikasi Group Project maupun *software engineering projects* kedepannya.
 
 #### Reflection Publisher-3
+1. ***Observer Pattern has two variations: Push model (publisher pushes data to subscribers) and Pull model (subscribers pull data from publisher). In this tutorial case, which variation of Observer Pattern that we use?***
+
+    Berdasarkan Model `subscriber.rs` dan output pada log nya, Observer Pattern yang digunakan untuk tutorial ini adalah Push model. Hal ini bisa dilihat dari output yang dikeluarkan apabila sudah subscribe yang mengindikasikan kalau publisher secara aktif mengirim notifikasi ke subscribers saat sebuah produk dibuat, dihapus, ataupun publish dengan cara Notification Service memanggil method `notify` yang mengiterasi seluruh subscribernya agar mendapat update terbaru. Lalu bisa dilihat juga pada `update` method di Model `Subscriber`, jika method tersebut dipanggil maka akan mengirimkan suatu payload ke URL subscriber itu.
+
+2. ***What are the advantages and disadvantages of using the other variation of Observer Pattern for this tutorial case? (example: if you answer Q1 with Push, then imagine if we used Pull)***
+
+    Jika kita menggunakan Pull model, kelebihannya adalah Subscriber memiliki kontrol penuh atas kapan akan ambil data dari Publisher. Sehingga Subscriber dapat mengambil data hanya saat dibutuhkan dan mengurangi kemungkinan pemborosan sumber daya. Kekurangannya model Pull adalah subscriber harus secara aktif meminta data dari Publisher yang mengakibatkan penundaan dalam pembaruan data jika penerima tidak meminta data dengan cukup sering, atau jika mereka tidak aktif selama periode waktu tertentu. Selain itu implementasi model Pull juga terbilang lebih sulit dari model Push karena penerima harus mengimplementasikan logika untuk meminta data dari Subscriber dan mengelola permintaan yang dikirim.
+
+3. ***Explain what will happen to the program if we decide to not use multi-threading in the notification process.***
+
+    Jika kita tidak menggunakan *multi-threading* pada *notification process*, maka aplikasinya akan berjalan sangat lambat terutama saat ada banyak subscribers atau notification processnya sedang *resource-intensive*. Tanpa *multi-threading*, notification akan di kriimkan ke subscribers satu-persatu secara synchronous. Jika mengirimkan sebuah notification memakan banyak waktu, maka notification yang berikutnya harus menunggu hingga sebelumnya terkirimkan yang dimana ini dapat menyebabkan delay di *notification process*.
