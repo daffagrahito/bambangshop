@@ -58,12 +58,12 @@ You can install Postman via this website: https://www.postman.com/downloads/
     -   [x] Commit: `Implement delete function in Subscriber repository.`
     -   [x] Write answers of your learning module's "Reflection Publisher-1" questions in this README.
 -   **STAGE 2: Implement services and controllers**
-    -   [ ] Commit: `Create Notification service struct skeleton.`
-    -   [ ] Commit: `Implement subscribe function in Notification service.`
-    -   [ ] Commit: `Implement subscribe function in Notification controller.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification service.`
-    -   [ ] Commit: `Implement unsubscribe function in Notification controller.`
-    -   [ ] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
+    -   [x] Commit: `Create Notification service struct skeleton.`
+    -   [x] Commit: `Implement subscribe function in Notification service.`
+    -   [x] Commit: `Implement subscribe function in Notification controller.`
+    -   [x] Commit: `Implement unsubscribe function in Notification service.`
+    -   [x] Commit: `Implement unsubscribe function in Notification controller.`
+    -   [x] Write answers of your learning module's "Reflection Publisher-2" questions in this README.
 -   **STAGE 3: Implement notification mechanism**
     -   [ ] Commit: `Implement update method in Subscriber model to send notification HTTP requests.`
     -   [ ] Commit: `Implement notify function in Notification service to notify each Subscriber.`
@@ -87,5 +87,13 @@ Menggunakan `DashMap` lebih tepat daripada menggunakan `Vec` jika url pada Subsc
 Singleton pattern memastikan bahwa sebuah class hanya ada satu instance dan memberikan global point untuk akses, sehingga dipastikan bahwa hanya ada satu variable `SUBSCRIBERS` saja untuk keseluruhan aplikasi. Lalu `DashMap` sendiri adalah Hashmap yang merupakan *thread-safe* data structure yang memperbolehkan multiple thread untuk mengakses dan mengubah data `SUBSCRIBERS` tanpa menyebabkan *data race* atau isu concurrency lainnya. Jika kita hanya menggunakan Hashmap biasa dengan Singleton pattern, maka *thread-safety* itu akan hilang yang malah mengakibatkan data race jika aplikasinya adalah multi-threaded. Jadi kesimpulannya, karena aplikasi BambangShop adalah multi-threaded application dan `SUBSCRIBERS` akan diakses banyak thread maka `DashMap` lebbih cocok.
 
 #### Reflection Publisher-2
+1. ***In the Model-View Controller (MVC) compound pattern, there is no “Service” and “Repository”. Model in MVC covers both data storage and business logic. Explain based on your understanding of design principles, why we need to separate “Service” and “Repository” from a Model?***
+Dalam MVC pattern, biasanya `Model` menjadi suatu bagian yang meng-*handle* terlalu banyak *responsibility*. Makanya dengan memisahkan `Service` dengan `Repository` dari `Model`, kita dapat menghindari masalah-masalah dan membuat code yang lebih *maintainable* dan *clean*. Dengan memisahkannya kita akan memenuhi Single Responsibility Principle (SRP), membuat sistem yang lebih "Decoupled" sehingga sistem lebih fleksibel, serta meningkatkan *Testability* dan *Reusability*.
+
+2. ***What happens if we only use the Model? Explain your imagination on how the interactions between each model (Program, Subscriber, Notification) affect the code complexity for each model?***
+Jika kita hanya menggunakan Model saja, maka setiap model (Program, Subscriber, Notification) akan menjadi lebih kompleks dan susah di-*maintain* karena harus meng-*handle* data access, business logic, dan interaksi dengan model lainnya secara sendiri-sendiri. Lalu model-model tersebut akan menjadi *tightly coupled* yang jika ada perubahan di satu model maka model lain juga akan terdampak, dimana ini lebih rawan menyebabkan bug. Terakhir, ini akan melanggar SRP karena tiap model meng-*handle* banyak *responsibility*.
+
+3. ***Have you explored more about Postman? Tell us how this tool helps you to test your current work. Maybe you want to also list which features in Postman you are interested in or feel like it’s helpful to help your Group Project or any of your future software engineering projects.***
+Setelah saya cari tahu lebih lanjut dengan mencoba-coba, Postman ini berguna untuk melakukan API Testing terhadap aplikasi yang telah dibuat apakah fungsionalitasnya sudah memenuhi kriteria yang kita mau dan berjalan semestinya. Kita dapat mengatur HTTP method untuk mengirimkan requestnya ke endpoint API yang dituju dan melihat apakah responsenya sudah sesuai. Kedepannya, Postman akan saya gunakan untuk melakukan API Testing untuk fungsionalitas aplikasi Group Project maupun *software engineering projects* kedepannya.
 
 #### Reflection Publisher-3
